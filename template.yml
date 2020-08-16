@@ -24,6 +24,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: functions/create-metric-filter.newLogGroups
+      CodeUri: ./functions/create-metric-filter.js
       Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
       Timeout: 6
       Policies:
@@ -55,6 +56,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: functions/create-metric-filter.existingLogGroups
+      CodeUri: ./functions/create-metric-filter.js
       Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
       Timeout: 900
       Policies:
