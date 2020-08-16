@@ -1,0 +1,58 @@
+{
+  "name": "sar-lambda-timeout-metric",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A SAR to automatically create timeout metrics for Lambda functions",
+  "main": "commitlint.config.js",
+  "scripts": {
+    "codecov": "codecov",
+    "install": "lerna bootstrap",
+    "test": "jest --config=jest.config.js",
+    "test:lint": "eslint .",
+    "package": "lerna run package",
+    "publish": "lerna run publish"
+  },
+  "dependencies": {
+    "@dazn/lambda-powertools-logger": "^1.24.1",
+    "aws-sdk": "^2.734.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@types/jest": "^26.0.10",
+    "codecov": "^3.7.2",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.5",
+    "jest": "^26.4.0",
+    "lint-staged": "^10.2.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lumigo-io/SAR-lambda-timeout-metric.git"
+  },
+  "keywords": [],
+  "author": "Yan Cui <theburningmonk@gmail.com>",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/lumigo-io/SAR-lambda-timeout-metric/issues"
+  },
+  "homepage": "https://github.com/lumigo-io/SAR-lambda-timeout-metric#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint"
+    ]
+  }
+}

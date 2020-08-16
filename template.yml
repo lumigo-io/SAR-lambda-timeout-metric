@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: lambda-timeout-metric
+    Description: Automatically create metric filters for Lambda log groups to report function timeouts as custom metric.
+    Author: Lumigo
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['cloudwatch', 'logs', 'ops', 'devops']
+    HomePageUrl: https://github.com/lumigo-io/SAR-lambda-timeout-metric
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/lumigo-io/SAR-lambda-timeout-metric
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    MemorySize: 128
+
+Resources:
+  CreateMetricFilterForNewLogGroups:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/create-metric-filter.newLogGroups
+      Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
+      Timeout: 6
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action: logs:PutMetricFilter
+            Resource: '*'
+      Events:
+        SubscribeEvent:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+                - aws.logs
+              detail-type:
+                - AWS API Call via CloudTrail
+              detail:
+                eventSource:
+                  - logs.amazonaws.com
+                eventName:
+                  - CreateLogGroup
+
+  CreateMetricFilterForNewLogGroupsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${CreateMetricFilterForNewLogGroups}
+
+  CreateMetricFilterForExistingLogGroups:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: functions/create-metric-filter.existingLogGroups
+      Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
+      Timeout: 900
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action:
+              - logs:PutMetricFilter
+              - logs:DescribeLogGroups
+            Resource: '*'
+
+  CreateMetricFilterForExistingLogGroupsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${CreateMetricFilterForExistingLogGroups}
+
+  LambdaInvocationCustomResource:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:374852340823:applications/lambda-invocation-cfn-custom-resource
+        SemanticVersion: 1.4.0
+
+  # custom resource to invoke the CreateMetricFilterForExistingLogGroups function during deployment
+  InvokeCreateMetricFilterForExistingLogGroups:
+    Type: Custom::LambdaInvocation
+    DependsOn:
+      - CreateMetricFilterForExistingLogGroups
+      - LambdaInvocationCustomResource
+    Properties:
+      ServiceToken: !GetAtt LambdaInvocationCustomResource.Outputs.FunctionArn
+      FunctionName: !Ref CreateMetricFilterForExistingLogGroups
+      InvocationType: Event # don't wait for the subscribe existing function to finish
+      # this ties this custom resource to changes to the function's configuration
+      # so that when CloudFormation would detect this custom resource as "changed"
+      # and triggers "Update" event during deployment
