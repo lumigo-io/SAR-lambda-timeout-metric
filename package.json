@@ -8,8 +8,8 @@
     "codecov": "codecov",
     "test": "jest --config=jest.config.js",
     "test:lint": "eslint .",
-    "package": "lerna run package",
-    "publish": "lerna run publish"
+    "package": "sam package --template-file template.yml --output-template-file packaged.yml --s3-bucket sar-logging-set-retention",
+    "publish": "sam publish --template packaged.yml --region us-east-1"
   },
   "dependencies": {
     "@dazn/lambda-powertools-logger": "^1.24.1",
