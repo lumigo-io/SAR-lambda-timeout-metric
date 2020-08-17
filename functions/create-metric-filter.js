@@ -2,7 +2,7 @@ const log = require("@dazn/lambda-powertools-logger");
 const cloudWatchLogs = require("./lib/cloudwatch-logs");
 
 const PREFIX = "/aws/lambda/";
-const METRIC_NAMESPACE = "AWS/Lambda";
+const METRIC_NAMESPACE = "Lumigo/Lambda";
 const METRIC_NAME_SUFFIX = "TimeOuts";
 
 const toMetricName = funcName => {

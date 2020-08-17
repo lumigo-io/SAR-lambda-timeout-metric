@@ -11,7 +11,7 @@ Metadata:
     ReadmeUrl: README.md
     Labels: ['cloudwatch', 'logs', 'ops', 'devops']
     HomePageUrl: https://github.com/lumigo-io/SAR-lambda-timeout-metric
-    SemanticVersion: 0.0.1
+    SemanticVersion: 0.1.0
     SourceCodeUrl: https://github.com/lumigo-io/SAR-lambda-timeout-metric
 
 Globals:
@@ -24,7 +24,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: functions/create-metric-filter.newLogGroups
-      CodeUri: ./functions/create-metric-filter.js
+      Runtime: nodejs12.x
       Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
       Timeout: 6
       Policies:
@@ -51,12 +51,12 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub /aws/lambda/${CreateMetricFilterForNewLogGroups}
-
+      
   CreateMetricFilterForExistingLogGroups:
     Type: AWS::Serverless::Function
     Properties:
       Handler: functions/create-metric-filter.existingLogGroups
-      CodeUri: ./functions/create-metric-filter.js
+      Runtime: nodejs12.x
       Description: Creates metric filter for Lambda log groups to report function timeouts as custom metric.
       Timeout: 900
       Policies:

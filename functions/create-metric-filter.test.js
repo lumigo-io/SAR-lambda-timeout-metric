@@ -54,7 +54,7 @@ describe("new log group", () => {
 			filterName: "lambda-timeout",
 			filterPattern: "Task timed out after",
 			metricTransformations: [{
-				metricNamespace: "AWS/Lambda",
+				metricNamespace: "Lumigo/Lambda",
 				metricName: "MyFunctionNameTimeOuts",
 				metricValue: "1"
 			}]
@@ -87,7 +87,7 @@ describe("existing log groups", () => {
 			filterName: "lambda-timeout",
 			filterPattern: "Task timed out after",
 			metricTransformations: [{
-				metricNamespace: "AWS/Lambda",
+				metricNamespace: "Lumigo/Lambda",
 				metricName: "Group1TimeOuts",
 				metricValue: "1"
 			}]
@@ -97,7 +97,7 @@ describe("existing log groups", () => {
 			filterName: "lambda-timeout",
 			filterPattern: "Task timed out after",
 			metricTransformations: [{
-				metricNamespace: "AWS/Lambda",
+				metricNamespace: "Lumigo/Lambda",
 				metricName: "Group2TimeOuts",
 				metricValue: "1"
 			}]
@@ -107,7 +107,7 @@ describe("existing log groups", () => {
 			filterName: "lambda-timeout",
 			filterPattern: "Task timed out after",
 			metricTransformations: [{
-				metricNamespace: "AWS/Lambda",
+				metricNamespace: "Lumigo/Lambda",
 				metricName: "Group3TimeOuts",
 				metricValue: "1"
 			}]
