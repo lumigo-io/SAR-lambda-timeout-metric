@@ -1,6 +1,6 @@
 # lambda-timeout-metric
 
-[![License](https://img.shields.io/badge/License-Apache%200.1.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%200.2.0-blue.svg)](LICENSE)
 
 A [Serverless Application Repository](https://serverlessrepo.aws.amazon.com) app that automatically create timeout metrics for Lambda functions using CloudWatch metric filters.
 
